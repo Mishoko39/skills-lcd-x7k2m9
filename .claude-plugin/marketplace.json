@@ -9,7 +9,7 @@
     {
       "name": "skills-lcd",
       "source": "./plugins/skills-lcd",
-      "description": "Set « Exploitation » : 5 skills pour piloter une location courte durée avec Claude (profil du logement, pricing saisonnier, fiches voyageurs, réponses avis, dashboard mensuel)."
+      "description": "L'Hôte Augmenté (set Exploitation) : 5 skills pour piloter une location courte durée avec Claude (profil du logement, pricing saisonnier, fiches voyageurs, réponses avis, dashboard mensuel)."
     }
   ]
 }
