@@ -2,7 +2,7 @@
 name: mon-logement
 description: >-
   Crée et tient à jour la fiche d'identité d'un logement en location courte durée
-  (LCD) : le fichier mon-logement-<nom>.md que TOUS les autres skills LCD
+  (LCD) : le fichier mon-logement-NOM.md que TOUS les autres skills LCD
   (pricing-saisonnier, fiches-voyageurs, reponses-voyageurs-avis,
   pilotage-dashboard) lisent pour personnaliser leur travail. Utiliser ce skill dès
   que l'hôte veut démarrer ou se lancer, configurer / présenter / décrire son
