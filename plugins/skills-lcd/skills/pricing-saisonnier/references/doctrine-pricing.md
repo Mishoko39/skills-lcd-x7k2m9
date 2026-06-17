@@ -1,6 +1,6 @@
 # Doctrine pricing LCD — méthode de référence
 
-Sommaire : 1. Typologies et comparables · 2. Point mort · 3. Calibrer le prix de base · 4. Structure de la grille · 5. Spécificités des biens atypiques · 6. Rituel d'ajustement mensuel · 7. Honnêteté.
+Sommaire : 1. Typologies et comparables · 2. Point mort · 3. Calibrer le prix de base · 4. Structure de la grille · 5. Spécificités des biens atypiques · 6. Rituel d'ajustement mensuel · 7. Croiser l'objectif CA · 8. Honnêteté.
 
 ## 1. Typologies et comparables
 
@@ -31,6 +31,15 @@ point mort/nuitée = (charges fixes annuelles + 12 × mensualité crédit) ÷ nu
 
 Utiliser `scripts/point_mort.py` pour le calcul : même formule, mêmes arrondis, à chaque fois.
 
+**Afficher le calcul du plancher dans le livrable.** L'hôte doit comprendre d'où vient son prix plancher. Dans le livrable `.md` et dans l'encart point mort du `.html`, afficher explicitement la décomposition :
+
+```
+(charges fixes + 12 × crédit) ÷ nuits louées + variables = point mort exact → arrondi à plancher
+Ex. : (4 800 + 12 × 850) ÷ 182,5 + 18 = 100,19 €/nuit → plancher retenu : 101 €/nuit
+```
+
+Cela évite que l'hôte perçoive le plancher comme un chiffre sorti de nulle part.
+
 ## 3. Calibrer le prix de base
 
 Le « prix de base » est celui de la **moyenne saison en semaine**. Trois ancres, dans cet ordre :
@@ -59,6 +68,7 @@ La grille découpe l'année en **périodes datées** (début/fin réels). Niveau
 
 Règles de construction :
 - **Aucun trou ni chevauchement** : toute date de l'année appartient à exactement une période ; les événements sont des surcharges ponctuelles par-dessus.
+- **Éviter la double modélisation d'un événement déjà couvert par une période haute.** Si un événement (ex. marchés de Noël, festival) tombe entièrement dans une période haute qui couvre déjà toute sa durée et à un prix équivalent, préférer une unique période haute plutôt que superposer période + événement. Les événements priment sur les périodes (comportement correct), mais la superposition est inutilement confuse pour l'hôte qui relit sa grille. Réserver les événements aux surcharges qui dépassent vraiment le niveau de la période englobante, ou qui couvrent des dates non incluses dans une période haute existante.
 - **Durées minimum** : 2 nuits en haute saison et sur les week-ends prisés (réduit le poids relatif du ménage et les trous d'une nuit dans le calendrier), 1 nuit en basse saison (remplissage), 3-7 nuits sur les semaines de très haute saison familiale (mer/montagne).
 - **Chaque période porte sa justification** en une ligne et, si elle dépend d'un calendrier externe, sa source.
 - Limiter le nombre de périodes (8 à 14 sur l'année hors événements) : une grille à 30 lignes est ingérable pour l'hôte.
@@ -82,6 +92,32 @@ Chaque début de mois (idéalement après le rapport pilotage-dashboard) :
 4. **Vérifier les événements** nouvellement annoncés dans la zone.
 5. **Ajuster les 2-3 mois à venir uniquement.** Pourquoi : les résas se prennent surtout dans cette fenêtre, et retoucher l'année entière chaque mois rend la stratégie illisible. Chaque delta = prix avant → prix après + motif en une ligne, tracé dans l'historique de la grille.
 
-## 7. Honnêteté
+## 7. Croiser l'objectif CA de l'hôte avec la grille
+
+Si le profil contient un objectif de chiffre d'affaires (`chiffres.objectif`, ex. « 2 900 € de CA/mois »), le comparer systématiquement au CA mensuel projeté par la grille. Ce croisement est le pont entre la stratégie de prix et la réalité économique de l'hôte.
+
+**Méthode de calcul :**
+
+```
+nuits_par_mois     = 365 × taux_occupation_réaliste / 12
+prix_moyen_pondéré = moyenne sur toutes les périodes (au prorata de leur durée) de :
+                     (5/7 × prix_semaine + 2/7 × prix_weekend)
+CA_projeté/mois    ≈ prix_moyen_pondéré × nuits_par_mois
+```
+
+Utiliser l'hypothèse **réaliste** (pas la haute, pas la prudente) : c'est celle qui reflète l'exploitation normale attendue. Présenter le résultat en fourchette estimée (« de l'ordre de »), jamais comme une promesse.
+
+**Formuler le verdict :**
+
+- **Objectif atteint ou dépassé** : formuler positivement et encourager à maintenir la grille — « Avec ce taux et cette grille, le CA projeté est d'environ X €/mois, ton objectif de Y € est atteint. »
+- **Écart négatif** (CA projeté < objectif) : annoncer l'écart en euros et proposer une piste d'action concrète parmi :
+  1. **Monter les prix de haute saison** : l'impact est le plus fort car la demande y est la moins élastique ;
+  2. **Améliorer le taux d'occupation** : investissement marketing ou ajustement des durées minimum ;
+  3. **Réviser l'objectif** si la grille est déjà au niveau du marché et que l'occupation est réaliste — mieux vaut un objectif atteignable qu'un objectif illusoire.
+- **Données manquantes** (objectif ou taux absent) : signaler le manque, sauter le croisement, et indiquer comment le fiabiliser (ex. « note ton objectif mensuel dans le profil pour que je puisse le vérifier à chaque ajustement »).
+
+Ce verdict figure dans le livrable `.md` (section dédiée après le point mort) et dans l'encart "Objectif vs projection" du `.html`.
+
+## 8. Honnêteté
 
 Tous les pourcentages de ce document sont des **ordres de grandeur de départ**, à calibrer sur les données réelles du bien. Les livrables présentent les impacts en fourchettes estimées, sourcent les données externes (calendriers, événements), datent les relevés de prix et signalent les données manquantes. Un chiffre incertain annoncé comme tel vaut mieux qu'un chiffre précis et faux.

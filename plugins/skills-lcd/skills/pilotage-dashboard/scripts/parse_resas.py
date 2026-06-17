@@ -34,6 +34,10 @@ import sys
 import unicodedata
 from datetime import date, datetime, timedelta
 
+# Date du jour (remplaçable dans les tests en monkey-patching _today())
+def _today():
+    return date.today()
+
 # ---------------------------------------------------------------------------
 # Normalisation des en-têtes et synonymes de colonnes (FR + EN)
 # ---------------------------------------------------------------------------
@@ -335,6 +339,7 @@ def lire_export(chemin, args, warnings, devises_vues):
         resas.append({
             "code": champ("code") or f"{os.path.basename(chemin)}:ligne{num}",
             "voyageur": champ("voyageur"),
+            "annonce": champ("annonce"),
             "canal": (champ("canal") or canal_defaut).lower(),
             "statut": statut or "confirmée",
             "annulee": annulee,
@@ -412,9 +417,29 @@ def calculer(resas, annee, mois, args, warnings):
         })
 
     nuits_disponibles = nb_jours - args.nuits_bloquees
+    occupation_invalide = False
     if nuits > nuits_disponibles:
         warnings.append(f"{nuits} nuits louées > {nuits_disponibles} nuits disponibles : "
-                        "doublons probables entre fichiers ou surréservation — À VÉRIFIER.")
+                        "doublons probables entre fichiers ou surréservation — À VÉRIFIER. "
+                        "KPI occupation_pct non fiable : valeur mise à null.")
+        occupation_invalide = True
+
+    # Correction 4 : mois en cours avec résas futures (séjours pas encore réalisés)
+    aujourd_hui = _today()
+    if annee == aujourd_hui.year and mois == aujourd_hui.month:
+        resas_futures = [r for r in actives
+                         if r["arrivee"] > aujourd_hui
+                         and nuits_dans_mois(r, annee, mois) > 0]
+        if resas_futures:
+            noms = ", ".join(r["code"] for r in resas_futures[:3])
+            plus = f" (+ {len(resas_futures) - 3} autres)" if len(resas_futures) > 3 else ""
+            warnings.append(
+                f"Le mois analysé ({annee}-{mois:02d}) est en cours : "
+                f"{len(resas_futures)} réservation(s) avec arrivée après aujourd'hui "
+                f"({aujourd_hui.isoformat()}) sont incluses dans les KPI — séjours pas "
+                f"encore réalisés, les chiffres sont PARTIELS. "
+                f"Résas concernées : {noms}{plus}."
+            )
 
     # Réservations à venir (après la fin du mois analysé) : matière pour les alertes
     a_venir = {}
@@ -444,13 +469,17 @@ def calculer(resas, annee, mois, args, warnings):
 
     detail.sort(key=lambda d: d["arrivee"])
     occupation = nuits / nuits_disponibles if nuits_disponibles else 0
+    if occupation_invalide:
+        occupation_pct = None
+    else:
+        occupation_pct = round(100 * min(occupation, 1.0), 1)
     return {
         "kpi": {
             "ca_hebergement": round(ca, 2),
             "nuits_louees": nuits,
             "nuits_disponibles": nuits_disponibles,
             "nuits_bloquees": args.nuits_bloquees,
-            "occupation_pct": round(100 * occupation, 1),
+            "occupation_pct": occupation_pct,
             "adr": round(ca / nuits, 2) if nuits else None,
             "revpar": round(ca / nuits_disponibles, 2) if nuits_disponibles else None,
         },
@@ -487,6 +516,9 @@ def main():
                    help="nuits bloquées par l'hôte ce mois-ci (usage perso, travaux)")
     p.add_argument("--canal-defaut", default="direct",
                    help="canal attribué aux fichiers au format minimal (défaut: direct)")
+    p.add_argument("--annonce", default=None, metavar="NOM",
+                   help="filtrer sur une annonce précise (nom exact ou sous-chaîne) — "
+                        "utile quand l'export mélange plusieurs logements")
     args = p.parse_args()
 
     m = re.match(r"^(\d{4})-(\d{2})$", args.mois)
@@ -521,22 +553,61 @@ def main():
     if len(devises_vues) > 1:
         warnings.append("Plusieurs devises détectées (" + ", ".join(sorted(devises_vues))
                         + ") — les montants NE SONT PAS convertis, à traiter avec l'hôte.")
+
+    # Correction 3 : multi-annonces — détection et filtrage optionnel
+    annonces_distinctes = sorted({r.get("annonce", "") for r in dedup
+                                   if r.get("annonce", "")})
+    if len(annonces_distinctes) > 1:
+        if args.annonce:
+            filtre = args.annonce.lower()
+            avant = len(dedup)
+            dedup = [r for r in dedup
+                     if filtre in r.get("annonce", "").lower()]
+            apres = len(dedup)
+            exclues = [a for a in annonces_distinctes
+                       if filtre not in a.lower()]
+            warnings.append(
+                f"Export multi-annonces — filtre « {args.annonce} » appliqué : "
+                f"{apres}/{avant} réservations conservées. "
+                f"Annonces exclues : {', '.join(repr(a) for a in exclues)}."
+            )
+        else:
+            warnings.append(
+                "L'export contient plusieurs annonces distinctes : "
+                + ", ".join(repr(a) for a in annonces_distinctes)
+                + " — les CA sont MÉLANGÉS. "
+                "Utilisez --annonce <nom> pour filtrer sur une seule annonce."
+            )
+
     if args.menage_par_sejour:
         warnings.append(f"Ménage estimé à {args.menage_par_sejour:.0f} € par séjour "
                         "(option --menage-par-sejour) pour les exports sans colonne "
                         "ménage — à confirmer avec l'hôte.")
 
+    # Correction 2 : devise propre + avertissement explicite si non détectée
+    if len(devises_vues) == 1:
+        devise_json = sorted(devises_vues)[0]
+    elif devises_vues:
+        devise_json = sorted(devises_vues)  # liste si multi-devise (déjà averti)
+    else:
+        devise_json = "EUR"
+        warnings.append("Devise non détectée dans les montants — EUR supposée. "
+                        "À vérifier avec l'hôte si d'autres devises sont possibles.")
+
+    conventions = [
+        "CA hébergement hors frais de ménage et hors taxe de séjour",
+        "séjours à cheval ventilés au prorata des nuits dormies dans le mois",
+        "annulations exclues du CA, indemnités comptées à part",
+    ]
+    if not devises_vues:
+        conventions.append("devise supposée EUR faute de symbole monétaire détecté dans les montants")
+
     resultat = {
         "mois": args.mois,
         "genere_le": datetime.now().strftime("%Y-%m-%d"),
-        "devise": sorted(devises_vues)[0] if len(devises_vues) == 1
-                  else (sorted(devises_vues) if devises_vues else "EUR (supposée)"),
+        "devise": devise_json,
         "fichiers": fichiers_info,
-        "conventions": [
-            "CA hébergement hors frais de ménage et hors taxe de séjour",
-            "séjours à cheval ventilés au prorata des nuits dormies dans le mois",
-            "annulations exclues du CA, indemnités comptées à part",
-        ],
+        "conventions": conventions,
     }
     resultat.update(calculer(dedup, annee, mois, args, warnings))
     resultat["avertissements"] = warnings

@@ -38,45 +38,47 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 @page{size:A4;margin:0}
-body{font-family:var(--police-texte);color:var(--encre);font-size:11pt;line-height:1.5;
+body{font-family:var(--police-texte);color:var(--encre);font-size:10.5pt;line-height:1.35;
      -webkit-print-color-adjust:exact;print-color-adjust:exact;background:#8a8a8a}
-.page{width:210mm;min-height:297mm;background:var(--fond);padding:16mm 18mm 10mm;margin:0 auto;
+.page{width:210mm;min-height:297mm;background:var(--fond);padding:12mm 17mm 8mm;margin:0 auto;
       position:relative;display:flex;flex-direction:column;page-break-after:always}
 .page:last-child{page-break-after:auto}
 @media screen{.page{margin:10mm auto;box-shadow:0 2px 14px rgba(0,0,0,.3)}}
 @media print{body{background:none}.page{margin:0;box-shadow:none}}
 
-.surtitre{font-size:9pt;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin-bottom:3mm}
-h1{font-family:var(--police-titre);color:var(--primaire);font-size:28pt;font-weight:600;line-height:1.15}
-.filet{width:28mm;height:.8mm;background:var(--accent);border:0;margin:5mm 0}
-.en{color:var(--encre-douce);font-size:9.5pt;font-style:italic}
-.intro{font-size:11.5pt;max-width:155mm;margin-bottom:7mm}
-.intro .en{display:block;margin-top:1mm}
+.surtitre{font-size:8.5pt;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin-bottom:2mm}
+h1{font-family:var(--police-titre);color:var(--primaire);font-size:24pt;font-weight:600;line-height:1.1}
+.filet{width:28mm;height:.8mm;background:var(--accent);border:0;margin:3.5mm 0}
+.en{color:var(--encre-douce);font-size:9pt;font-style:italic}
+.intro{font-size:10.5pt;max-width:155mm;margin-bottom:4mm}
+.intro .en{display:block;margin-top:.5mm}
 
-.etapes{display:flex;flex-direction:column;gap:5mm}
-.etape{background:var(--carte);border:1px solid var(--filet);border-radius:var(--rayon);padding:5mm 7mm}
-.etape h2{font-family:var(--police-titre);color:var(--primaire);font-size:14pt;font-weight:600;
-          display:flex;align-items:baseline;gap:3mm;margin-bottom:2.5mm}
-.etape h2 .numero{font-size:10pt;color:var(--accent);letter-spacing:.12em}
-.etape h2 .en{font-size:10pt;font-weight:400}
+.etapes{display:flex;flex-direction:column;gap:2.5mm}
+.etape{background:var(--carte);border:1px solid var(--filet);border-radius:var(--rayon);padding:3.5mm 6mm}
+.etape h2{font-family:var(--police-titre);color:var(--primaire);font-size:12.5pt;font-weight:600;
+          display:flex;align-items:baseline;gap:3mm;margin-bottom:1.5mm}
+.etape h2 .numero{font-size:9.5pt;color:var(--accent);letter-spacing:.12em}
+.etape h2 .en{font-size:9.5pt;font-weight:400}
 .etape ul{list-style:none}
-.etape li{padding-left:6mm;position:relative;margin-bottom:2mm;font-size:11pt}
-.etape li::before{content:"";position:absolute;left:0;top:.42em;width:2.4mm;height:2.4mm;
+.etape li{padding-left:5mm;position:relative;margin-bottom:1mm;font-size:10.5pt}
+.etape li:last-child{margin-bottom:0}
+.etape li::before{content:"";position:absolute;left:0;top:.42em;width:2.2mm;height:2.2mm;
                   background:var(--accent);border-radius:50%}
 .etape li .en{display:block}
 
-.securite{margin-top:6mm;background:var(--carte);border:1px solid var(--filet);
-          border-left:1.6mm solid var(--primaire);border-radius:var(--rayon);padding:5mm 7mm}
-.securite h2{font-family:var(--police-titre);color:var(--primaire);font-size:13pt;font-weight:600;margin-bottom:2mm}
-.securite h2 .en{font-size:10pt;font-weight:400}
+.securite{margin-top:3mm;background:var(--carte);border:1px solid var(--filet);
+          border-left:1.6mm solid var(--primaire);border-radius:var(--rayon);padding:3.5mm 6mm}
+.securite h2{font-family:var(--police-titre);color:var(--primaire);font-size:12pt;font-weight:600;margin-bottom:1.5mm}
+.securite h2 .en{font-size:9.5pt;font-weight:400}
 .securite ul{list-style:none}
-.securite li{padding-left:6mm;position:relative;margin-bottom:2mm}
-.securite li::before{content:"";position:absolute;left:0;top:.42em;width:2.4mm;height:2.4mm;
+.securite li{padding-left:5mm;position:relative;margin-bottom:1mm}
+.securite li:last-child{margin-bottom:0}
+.securite li::before{content:"";position:absolute;left:0;top:.42em;width:2.2mm;height:2.2mm;
                      border:.5mm solid var(--primaire);border-radius:50%}
 .securite li .en{display:block}
 
-.aide{margin-top:5mm;padding-top:5mm;border-top:1px solid var(--filet);font-size:10pt;text-align:center}
-.pied{position:absolute;left:0;right:0;bottom:6mm;text-align:center;font-size:8pt;color:var(--encre-douce)}
+.aide{margin-top:3mm;padding-top:3mm;border-top:1px solid var(--filet);font-size:9.5pt;text-align:center}
+.pied{position:absolute;left:0;right:0;bottom:4mm;text-align:center;font-size:7.5pt;color:var(--encre-douce)}
 </style>
 </head>
 <body>

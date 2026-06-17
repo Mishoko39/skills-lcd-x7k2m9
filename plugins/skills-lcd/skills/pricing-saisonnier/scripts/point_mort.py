@@ -43,7 +43,7 @@ def calculer(charges_fixes, credit_mensuel, charges_variables_nuit, occupations)
         hypotheses.append({
             "nom": NOMS_HYPOTHESES[i] if i < len(NOMS_HYPOTHESES) else f"hypothese-{i + 1}",
             "occupation": round(occ, 2),
-            "nuits_louees": round(365 * occ),
+            "nuits_louees": round(365 * occ, 1),
             "point_mort_nuit": round(pm, 2),
         })
     return hypotheses
@@ -88,7 +88,7 @@ def main():
     print(f"Charges variables : {args.charges_variables_nuit:.2f} €/nuit louée\n")
     print(f"{'Hypothèse':<12}{'Occupation':>12}{'Nuits/an':>10}{'Point mort':>14}")
     for h in hypotheses:
-        print(f"{h['nom']:<12}{h['occupation'] * 100:>10.0f} %{h['nuits_louees']:>10}"
+        print(f"{h['nom']:<12}{h['occupation'] * 100:>10.0f} %{h['nuits_louees']:>10.1f}"
               f"{h['point_mort_nuit']:>11.2f} €")
     print(f"\nPlancher de grille retenu (hypothèse la plus prudente, arrondi sup.) : {plancher} €/nuit")
     return 0

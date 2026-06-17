@@ -78,6 +78,24 @@ Découpe l'année à venir en **périodes datées** (début/fin réels, pas des 
 
 Calibre les niveaux sur trois ancres : les prix actuels de l'hôte, le relevé concurrents (même typologie uniquement), et la saisonnalité. Ajoute les **événements à forte tension** comme surcharges ponctuelles datées. Les ordres de grandeur de majoration par saison sont dans `references/doctrine-pricing.md` — ce sont des points de départ à calibrer, pas des règles.
 
+### 5b. Croiser l'objectif CA de l'hôte avec la grille
+
+Si le profil contient `chiffres.objectif` (ex. « 2 900 € de CA/mois ») et `chiffres.taux_occupation_pct`, calcule un **CA mensuel projeté** à partir de la grille que tu viens de construire :
+
+```
+nuits_par_mois = 365 × taux_occupation / 12
+CA_projeté/mois ≈ prix_moyen_pondéré_grille × nuits_par_mois
+```
+
+Le **prix moyen pondéré** est la moyenne des prix semaine/week-end pondérée par le poids de chaque type de nuit (5/7 semaine, 2/7 week-end), moyennée sur toutes les périodes au prorata de leur durée. Utilise le taux d'occupation de l'hypothèse **réaliste** pour les nuits projetées.
+
+Compare ensuite ce CA projeté à l'objectif déclaré, et formule un **verdict clair** dans le livrable :
+
+- **Objectif atteint ou dépassé** : « Avec ce taux et cette grille, le CA projeté est d'environ X €/mois — ton objectif de Y € est atteint. »
+- **Écart positif ou négatif** : « Le CA projeté (X €/mois) est en dessous de ton objectif (Y €/mois) d'environ Z €/mois. » Suivi d'une piste d'action concrète parmi : monter les prix de haute saison, cibler un meilleur taux d'occupation, ou revoir l'objectif à la lumière du marché.
+
+Ce verdict figure dans le livrable `.md` et dans l'encart "Objectif vs projection" du livrable `.html`. Formule-le en langage simple, en fourchette (« de l'ordre de »), jamais comme une promesse. S'il manque une donnée (objectif ou taux), signale l'absence et saute le croisement.
+
 ### 6. Les livrables — trois formats, mêmes chiffres
 
 Produis dans le dossier de travail, pour `<logement>` en minuscules-avec-tirets et `<annee>` la période couverte :

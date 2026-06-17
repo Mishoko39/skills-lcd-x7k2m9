@@ -24,6 +24,7 @@ equipements:
   differenciants: []
   confort: []
   absents_assumes: []
+  consignes_securite: []          # règles de sécurité des équipements (spa, poêle, mezzanine…)
 
 chiffres:
   prix_moyen_nuit: "à compléter"

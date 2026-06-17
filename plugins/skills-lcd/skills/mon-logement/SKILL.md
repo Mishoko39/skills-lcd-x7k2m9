@@ -124,6 +124,11 @@ Extrais de cette matière tout ce qui se mappe sur le schéma
 questions que sur les trous et les incohérences, et termine par la validation
 finale. Tu épargnes à l'hôte l'essentiel de l'interview.
 
+**Attention** : une énumération (`logement.typologie`, `ton.registre`) ou un chiffre
+qui n'est pas écrit noir sur blanc dans la source ne se DÉDUIT jamais du ton ou du
+positionnement — marque-le `"à compléter"` et confirme-le par une question courte
+(cf. schema-profil.md §5).
+
 ## Production du fichier
 
 1. Lis `references/schema-profil.md` (clés exactes, types, conventions) et pars du

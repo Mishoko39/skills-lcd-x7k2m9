@@ -121,6 +121,12 @@ Communes : `{{nom_logement}}`, `{{contact_hote}}` (prénom + téléphone, ou pr�
   (toujours un bloc WiFi qui renvoie à la fiche dédiée — jamais le mot de passe ici)
 - `{{mot_fin_fr}}` / `_en` : au revoir + invitation douce à laisser un avis
 
+> **Calibrage guide bilingue** — le guide peut déborder sur 3 pages si le contenu
+> est trop dense. Pour tenir en 2 pages : max 5 items « maison en bref » (pas 6),
+> max 4 blocs « bon à savoir », traductions EN condensées (≤ 60 caractères par
+> case, compléter plutôt que traduire mot-à-mot). Si `html_to_pdf.py` renvoie
+> 3 pages, réduire d'abord les blocs répétables avant de raccourcir les phrases FR.
+
 **gabarit-fiche-wifi.html** (1 page)
 - `{{wifi_ssid}}` (profil : `sejour.wifi_nom`), `{{wifi_motdepasse}}` (demandé à
   l'hôte — JAMAIS dans le profil), image `qr-wifi.png` à côté du HTML

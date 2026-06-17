@@ -215,6 +215,9 @@ def construire(chemin_sortie):
            "Ex. parking privé, WiFi, cuisine équipée, climatisation…", 46)
     f.ligne([("Ce qu'il n'y a PAS (volontairement)", "equipements__absents_assumes", 1,
               "Ex. pas de TV — assumé pour la déconnexion")])
+    f.zone("Consignes de sécurité des équipements", "equipements__consignes_securite",
+           "Ex. spa : surveillance des enfants, jamais seuls dans l'eau ; poêle : laisser "
+           "refroidir les cendres ; mezzanine sans garde-corps déconseillée aux tout-petits…", 54)
 
     # ---- 4. Chiffres -----------------------------------------------------------
     f.section("4. Vos chiffres", "Des montants approximatifs suffisent. En euros, chiffres uniquement.")

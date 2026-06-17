@@ -8,6 +8,7 @@ Conventions :
 - Dates au format `AAAA-MM-JJ`. Prix en euros entiers, **par nuit, hors frais de ménage et taxe de séjour**.
 - « Week-end » = nuits du vendredi et du samedi.
 - Les périodes couvrent l'année **sans trou ni chevauchement** ; les `evenements` sont des surcharges ponctuelles qui priment sur la période qui les contient.
+- **Règle de continuité** : la première période doit avoir `debut` == `periode_couverte.debut` et la dernière doit avoir `fin` == `periode_couverte.fin`. Entre deux périodes consécutives, `fin` de la précédente doit être strictement égale à `debut` de la suivante moins un jour (pas de trou, pas de chevauchement). Exemple : si une période finit `2026-08-30`, la suivante commence `2026-08-31`.
 - Champ inconnu → omettre la clé ou `null` + une entrée dans `donnees_manquantes`. Ne jamais inventer une valeur.
 
 ## Schéma commenté

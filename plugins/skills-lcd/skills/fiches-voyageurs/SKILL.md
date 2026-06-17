@@ -93,16 +93,26 @@ dans `references/gabarits-et-theme.md` §5.
 - **Livret local** : lis `references/livret-local.md` AVANT de le rédiger —
   recherche web pour distances/temps de route et infos pratiques vérifiées,
   sources fiables uniquement, « se renseigner sur place » plutôt qu'une invention.
-- Nettoie les commentaires de gabarit du HTML final livré.
+- Nettoie les commentaires de gabarit du HTML final livré : supprimer l'en-tête
+  explicatif du fichier (bloc `<!-- ═══…═══ -->`), les marqueurs de répétition
+  (`<!-- ↻ … -->`), et les blocs `FALLBACK` / `OPTIONNEL` non retenus. En revanche,
+  **conserver** les délimiteurs de section CSS `/* ════ THÈME … ════ */` dans le
+  `<style>` : ils aident l'hôte à retrouver la zone couleurs s'il veut ajuster
+  sa palette plus tard.
 
 **QR code WiFi** :
 ```bash
 python scripts/make_qr.py "NomDuReseau" "MotDePasse" qr-wifi.png
 ```
 (module manquant : `pip install --user "qrcode[pil]"`). Place `qr-wifi.png` à côté
-du HTML de la fiche. Si rien ne permet de générer le QR : utilise le bloc FALLBACK
-commenté dans le gabarit (cadre « coller le QR ici ») et donne à l'hôte la chaîne
-exacte à encoder dans un générateur fiable :
+du HTML de la fiche.
+
+Après avoir lancé `make_qr.py`, **vérifie que `qr-wifi.png` existe réellement** sur
+le disque (`ls -lh qr-wifi.png`). Si le fichier est absent (script échoué, module
+manquant, erreur silencieuse) : bascule sur le bloc FALLBACK commenté dans le gabarit
+(cadre « coller le QR ici ») plutôt que de livrer une fiche avec une image cassée.
+Donne à l'hôte la chaîne exacte à encoder dans un générateur fiable (qr-code-generator.com,
+qrcodemonkey.io…) :
 `WIFI:T:WPA;S:<nom_du_reseau>;P:<mot_de_passe>;;`
 
 ## Étape 4 — PDF et vérification

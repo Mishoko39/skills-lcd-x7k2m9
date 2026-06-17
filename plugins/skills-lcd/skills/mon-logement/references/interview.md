@@ -44,7 +44,9 @@ d'intérêt proches).
 Voyageurs max · chambres · lits (tailles) · salles de bain · surface · extérieur ·
 équipements « waouh » qui différencient · équipements de confort · ce qui manque
 volontairement (ex. pas de TV — utile pour assumer le positionnement dans les annonces
-et réponses).
+et réponses) · **consignes de sécurité** des équipements à risque (spa : surveillance des
+enfants ; poêle ; mezzanine sans garde-corps…) — servent aux fiches voyageurs et aux
+réponses sur la sécurité.
 
 ### Bloc 3 — Chiffres
 Prix moyen/nuit et fourchette basse-haute · frais de ménage facturés · taux
@@ -99,6 +101,10 @@ C'est le bloc le plus agréable : laisser l'hôte raconter, et en tirer la secti
   importe ») : proposer de s'arrêter là, générer la fiche avec ce qu'on a, et rappeler
   qu'on peut la compléter n'importe quand en relançant le skill. Une fiche à 70 %
   utilisée vaut mieux qu'une fiche parfaite jamais terminée.
+- **Énumération non confirmée** (typologie classique/atypique/insolite, registre
+  tutoiement/vouvoiement) : ne JAMAIS la déduire du positionnement ou du ton perçu. Si
+  l'hôte ne l'a pas dite clairement, pose la question avec les options en langage courant ;
+  sans réponse → `à compléter` (jamais une valeur devinée, cf. schema-profil.md §5).
 
 ## Validation finale (obligatoire avant d'écrire le fichier)
 

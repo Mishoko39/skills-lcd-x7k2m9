@@ -67,9 +67,21 @@
   <p>{{PHRASE_POINT_MORT_SIMPLE}}</p>
   <ul>
     <!-- REPETER pour chaque hypothèse -->
-    <li>Hypothèse {{NOM_HYPOTHESE}} ({{OCCUPATION}} % d'occupation) : <strong>{{POINT_MORT}} €/nuit</strong></li>
+    <li>Hypothèse {{NOM_HYPOTHESE}} ({{OCCUPATION}} % d'occupation, soit {{NUITS_LOUEES}} nuits/an) : <strong>{{POINT_MORT}} €/nuit</strong></li>
   </ul>
+  <p><em>Calcul du plancher (hypothèse prudente) :</em>
+     ({{CHARGES_FIXES}} € charges fixes + 12 × {{CREDIT_MENSUEL}} € crédit) ÷ {{NUITS_PRUDENTE}} nuits
+     + {{CHARGES_VARIABLES}} € variables = {{POINT_MORT_EXACT}} €/nuit → arrondi à <strong>{{PLANCHER}} €/nuit</strong>.</p>
   <p>Plancher retenu pour cette grille : <strong>{{PLANCHER}} €/nuit</strong> — aucune période ne descend en dessous{{MENTION_EXCEPTION_PLANCHER}}.</p>
+</div>
+
+<!-- Bloc objectif vs projection : à supprimer si l'objectif CA n'est pas renseigné dans le profil -->
+<div class="encadre">
+  <h3>Objectif vs projection</h3>
+  <p>CA mensuel projeté (hypothèse réaliste, {{OCCUPATION_REALISTE}} % d'occupation) : <strong>~{{CA_PROJETE_MOIS}} €/mois</strong>
+     ({{NUITS_MOIS}} nuits × {{PRIX_MOYEN_PONDERE}} € prix moyen pondéré).</p>
+  <p>Ton objectif : <strong>{{OBJECTIF_CA_MOIS}} €/mois</strong> — {{VERDICT_OBJECTIF}}.</p>
+  <!-- {{VERDICT_OBJECTIF}} = ex. "objectif atteint (+{{ECART}} €/mois)" ou "écart de {{ECART}} €/mois → {{PISTE_ACTION}}" -->
 </div>
 
 <h2>Ce qu'on te recommande en priorité</h2>

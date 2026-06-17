@@ -70,6 +70,7 @@ equipements:
   differenciants: ["jacuzzi privatif sur terrasse", "poêle à bois"]  # liste de textes
   confort: ["parking privé", "kitchenette équipée"]
   absents_assumes: ["pas de TV (déconnexion assumée)"]   # manques volontaires
+  consignes_securite: ["spa : surveillance des enfants obligatoire"]  # règles de sécurité des équipements (spa, poêle, mezzanine…) — lues par fiches-voyageurs et reponses-voyageurs-avis
 
 chiffres:
   prix_moyen_nuit: 180            # nombre (€)
@@ -166,6 +167,11 @@ particularités, ce que les voyageurs adorent. « Rien à signaler » si vide.)
   vérifier qu'une valeur est bien un nombre avant de calculer** ; `"à compléter"` ou
   `null` = donnée manquante, à demander à l'hôte ou à ignorer proprement.
 - Liste sans donnée → `[]`.
+- **Énumérations** (`logement.typologie`, `ton.registre`) : toujours l'une des valeurs
+  listées. Si la source (annonce collée, propos de l'hôte) ne la nomme pas explicitement,
+  NE PAS l'inférer du positionnement ou du ton perçu — mettre `"à compléter"` et poser
+  une question courte avec les options en langage courant. Une typologie devinée à tort
+  fausse le ton ET le pricing de tous les skills aval.
 - On n'invente JAMAIS une valeur pour remplir une case : une donnée manquante affichée
   honnêtement vaut mieux qu'un chiffre faux qui contaminera pricing et dashboard.
 
@@ -192,7 +198,7 @@ Cas particuliers (le reste du mapping est mécanique) :
 
 | Champ(s) PDF | Clé YAML | Transformation |
 |---|---|---|
-| `equipements__differenciants`, `equipements__confort`, `equipements__absents_assumes` | listes correspondantes | découper sur virgules / retours à la ligne |
+| `equipements__differenciants`, `equipements__confort`, `equipements__absents_assumes`, `equipements__consignes_securite` | listes correspondantes | découper sur virgules / retours à la ligne |
 | `extras__1__nom` + `extras__1__prix` … `extras__4__…` | `extras` (liste d'objets) | une entrée par paire non vide ; prix → nombre |
 | `contacts__1__role` / `__nom` / `__telephone` … `__3__…` | `contacts` (liste d'objets) | une entrée par trio non vide |
 | `marche__concurrents` (zone multiligne) | `marche.concurrents` | une ligne = un concurrent, format « nom — commune — capacité — prix » |

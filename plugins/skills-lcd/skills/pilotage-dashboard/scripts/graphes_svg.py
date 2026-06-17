@@ -193,6 +193,14 @@ def main():
     if not entrees:
         print("Aucune entrée mensuelle dans l'historique.", file=sys.stderr)
         return 2
+    if len(entrees) < 2:
+        print(
+            f"Historique insuffisant : {len(entrees)} mois enregistré(s), "
+            "il en faut au moins 2 pour produire des graphes significatifs. "
+            "Relancez ce script après le deuxième mois de suivi.",
+            file=sys.stderr,
+        )
+        return 2
 
     libelles = [_etiquette_mois(e["mois"]) for e in entrees]
     objectif = data.get("objectif_ca_mensuel")
